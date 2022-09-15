@@ -1,0 +1,9 @@
+<resources>
+    <string name="app_name">EmiCalculator</string>
+    <string name="enter_interest">Enter interest</string>
+    <string name="enter_year">Enter year</string>
+    <string name="calculate">Calculate</string>
+
+    <string name="emihint">Emi</string>
+    <string name="enter_principal_amount">Enter principal amount</string>
+</resources>
