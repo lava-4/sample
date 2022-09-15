@@ -1,1 +1,41 @@
 
+name: android-lifecycle-android-build-apk #script name
+#configure trigger event whenever user push code to the branch name master
+on:
+  push:
+    branches:
+      - master
+#configure jobs
+jobs:
+  build-android: #jobname
+    runs-on: ubuntu-latest
+    if: "contains(github.event.head_commit.message, 'ci build android')" #check whether commit message contains our keyword
+    steps:
+      - uses: actions/checkout@v2
+      - name: Install npm dependencies #step 1 required install dependencies
+        run: |
+          npm install
+ 
+      - name: Cache Gradle Wrapper #step 2 cache gradle wrapper
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/wrapper
+          key: ${{ runner.os }}-gradle-wrapper-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+ 
+      - name: Cache Gradle Dependencies #step 3 cache gradle dependency
+        uses: actions/cache@v2
+        with:
+          path: ~/.gradle/caches
+          key: ${{ runner.os }}-gradle-caches-${{ hashFiles('gradle/wrapper/gradle-wrapper.properties') }}
+          restore-keys: |
+            ${{ runner.os }}-gradle-caches-
+ 
+      - name: Build Android Apk #step 4 build apk file
+        run: |
+          cd android && chmod +x gradlew && ./gradlew assembleDebug --no-daemon
+         
+      - name: Upload Artifact #step 5 locate and upload generated apk file in server
+        uses: actions/upload-artifact@v1
+        with:
+          name: app-debug.apk
+          path: android/app/build/outputs/apk/debug/
