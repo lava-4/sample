@@ -1,4 +1,3 @@
-
 name: android-lifecycle-android-build-apk #script name
 #configure trigger event whenever user push code to the branch name master
 on:
